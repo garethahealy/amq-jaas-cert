@@ -1,0 +1,13 @@
+#!/bin/sh
+
+curl -L https://oss.sonatype.org/content/repositories/releases/com/garethahealy/amq6-dual-jaas-plugin/amq6-dual-jaas-plugin-parent/1.1.0/amq6-dual-jaas-plugin-parent-1.1.0.jar -o $AMQ_HOME/lib/amq6-dual-jaas-plugin.jar
+
+echo "Adding copy to overwrite broker.xml with predefined version"
+echo "##" >> $AMQ_HOME/bin/configure.sh
+echo "cp /tmp/src/conf/activemq.xml $AMQ_HOME/conf/activemq.xml" >> $AMQ_HOME/bin/configure.sh
+echo "cp /tmp/src/conf/login.config $AMQ_HOME/conf/login.config" >> $AMQ_HOME/bin/configure.sh
+
+echo "Adding networkconnector users.properties"
+echo "echo \"networkconnector=CN=broker-amqtest-amq-tcp-ssl,\ O=GarethHealy,\ C=UK\" >> $AMQ_HOME/conf/users.properties" >> $AMQ_HOME/bin/configure.sh
+
+exec $AMQ_HOME/bin/launch.sh
