@@ -8,27 +8,28 @@ OpenShift PoC for JBoss AMQ 6.2.1 using: [JaasDualAuthenticationPlugin](https://
 - https://github.com/jboss-openshift/application-templates/blob/master/docs/amq/amq62-ssl.adoc
 
 ## Deploy to OCP
-create templates
+1.Create upstream templates
 
     oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq62-ssl.json -n openshift
     oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/jboss-image-streams.json -n openshift
 
-create SA
+2.Create AMQ Service Account (SA)
 
     oc create serviceaccount amq-service-account
     oc policy add-role-to-user view system:serviceaccount:$(oc project -q):amq-service-account
 
-create secret
+3.Create secret
 
     oc create secret generic amq-app-secret \
         --from-file=amq-broker.ks=generated-certs/amq-broker.ks \
         --from-file=amq-broker.ts=generated-certs/amq-broker.ts
 
-todo: create bc
-    
-    todo
+4.Create the BuildConfig for this repo, which extends the base AMQ image
 
-create template
+    oc create -f https://raw.githubusercontent.com/garethahealy/amq-jaas-cert/master/openshift-buildconfig.yaml
+    oc start-build amq6-broker-custom
+
+5.Once the build is complete, deploy the template
 
     oc process amq62-ssl \
         -p AMQ_KEYSTORE=amq-broker.ks \
@@ -37,8 +38,12 @@ create template
         -p AMQ_TRUSTSTORE_PASSWORD=password \
         -n openshift | oc create -f -
 
-## Send test message 
-todo
+6.Manually update the image to be the BC image
+
+    TODO: via patch command
+    
+## Produce and Consume examples
+1.Produce via activemq-admin
 
     $AMQ_HOME/bin/activemq-admin \
         -Djavax.net.ssl.trustStore=/tmp/src/amq-client.ts \
@@ -52,7 +57,7 @@ todo
         --messageCount 1 \
         --message HelloWorld 
         
-todo
+2.Consume via activemq-admin
 
     $AMQ_HOME/bin/activemq-admin \
         -Djavax.net.ssl.trustStore=/tmp/src/amq-client.ts \
@@ -65,7 +70,7 @@ todo
         --destination queue://MY.TEST.QUEUE \
         --messageCount 1
 
-todo
+3.Consume via MVN
 
     mvn activemq-perf:consumer \
         -Djavax.net.ssl.trustStore=/Users/garethah/Documents/github/garethahealy/amq-jaas-cert/amq-client.ts \
