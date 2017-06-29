@@ -46,9 +46,9 @@ OpenShift PoC for JBoss AMQ 6.2.1 using: [JaasDualAuthenticationPlugin](https://
 1.Produce via activemq-admin
 
     $AMQ_HOME/bin/activemq-admin \
-        -Djavax.net.ssl.trustStore=/tmp/src/amq-client.ts \
+        -Djavax.net.ssl.trustStore=/tmp/src/generated-certs/amq-client.ts \
         -Djavax.net.ssl.trustStorePassword=password \
-        -Djavax.net.ssl.keyStore=/tmp/src/amq-client.ks \
+        -Djavax.net.ssl.keyStore=/tmp/src/generated-certs/amq-client.ks \
         -Djavax.net.ssl.keyStorePassword=password producer \
         --brokerUrl ssl://localhost:61617 \
         --user userDKV \
@@ -60,9 +60,9 @@ OpenShift PoC for JBoss AMQ 6.2.1 using: [JaasDualAuthenticationPlugin](https://
 2.Consume via activemq-admin
 
     $AMQ_HOME/bin/activemq-admin \
-        -Djavax.net.ssl.trustStore=/tmp/src/amq-client.ts \
+        -Djavax.net.ssl.trustStore=/tmp/src/generated-certs/amq-client.ts \
         -Djavax.net.ssl.trustStorePassword=password \
-        -Djavax.net.ssl.keyStore=/tmp/src/amq-client.ks \
+        -Djavax.net.ssl.keyStore=/tmp/src/generated-certs/amq-client.ks \
         -Djavax.net.ssl.keyStorePassword=password consumer \
         --brokerUrl ssl://localhost:61617 \
         --user userDKV \
