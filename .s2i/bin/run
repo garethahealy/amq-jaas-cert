@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DUAL_JAAS_VERSION=1.2.0-BETA1
+DUAL_JAAS_VERSION=1.2.0
 curl -L https://oss.sonatype.org/content/repositories/releases/com/garethahealy/amq6-dual-jaas-plugin/amq6-dual-jaas-plugin-parent/$DUAL_JAAS_VERSION/amq6-dual-jaas-plugin-parent-$DUAL_JAAS_VERSION.jar -o $AMQ_HOME/lib/amq6-dual-jaas-plugin.jar
 
 echo "Adding copy to overwrite broker.xml with predefined version"
