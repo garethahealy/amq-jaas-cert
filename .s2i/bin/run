@@ -11,4 +11,10 @@ echo "cp /tmp/src/conf/login.config $AMQ_HOME/conf/login.config" >> $AMQ_HOME/bi
 echo "Adding networkconnector users.properties"
 echo "echo \"networkconnector=CN=broker-amqtest-amq-tcp-ssl,\ O=GarethHealy,\ C=UK\" >> $AMQ_HOME/conf/users.properties" >> $AMQ_HOME/bin/configure.sh
 
+echo "Adding test users users.properties"
+echo "echo \"user1=password\" >> $AMQ_HOME/conf/users.properties" >> $AMQ_HOME/bin/configure.sh
+echo "echo \"user2=password\" >> $AMQ_HOME/conf/users.properties" >> $AMQ_HOME/bin/configure.sh
+echo "echo \"user1=user1\" >> $AMQ_HOME/conf/groups.properties" >> $AMQ_HOME/bin/configure.sh
+echo "echo \"user2=user2\" >> $AMQ_HOME/conf/groups.properties" >> $AMQ_HOME/bin/configure.sh
+
 exec $AMQ_HOME/bin/launch.sh
