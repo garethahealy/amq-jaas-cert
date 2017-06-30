@@ -130,7 +130,7 @@
         <plugins>
             <bean id="jaasDualAuthenticationNetworkConnectorPlugin" class="com.garethahealy.amq6dualjaasplugin.JaasDualAuthenticationNetworkConnectorPlugin" xmlns="http://www.springframework.org/schema/beans">
                 <property name="configuration" value="activemq-props"/>
-                <property name="sslConfiguration" value="activemq-cert"/>
+                <property name="jaasCertificateConfiguration" value="activemq-cert"/>
             </bean>
         </plugins>
 
