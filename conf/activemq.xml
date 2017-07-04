@@ -32,29 +32,6 @@
           init-method="start" destroy-method="stop">
     </bean>
 
-    <bean id="authorizationEntry1" class="org.apache.activemq.security.XBeanAuthorizationEntry">
-        <property name="read" value="user1"/>
-        <property name="write" value="user1"/>
-        <property name="admin" value="user1"/>
-        <property name="queue" value="DEV-QUEUE-1"/>
-    </bean>
-
-    <bean id="authorizationEntry2" class="org.apache.activemq.security.XBeanAuthorizationEntry">
-        <property name="read" value="*"/>
-        <property name="write" value="user2"/>
-        <property name="admin" value="user2"/>
-        <property name="queue" value="DEV-QUEUE-2"/>
-    </bean>
-
-    <bean id="authorizationMap" class="org.apache.activemq.security.XBeanAuthorizationMap">
-        <property name="authorizationEntries">
-            <list>
-                <ref bean="authorizationEntry1"/>
-                <ref bean="authorizationEntry2"/>
-            </list>
-        </property>
-    </bean>
-
     <!--
         The <broker> element is used to configure the ActiveMQ broker.
     -->
@@ -63,6 +40,10 @@
         <destinations>
             <queue physicalName="DEV-QUEUE-1"/>
             <queue physicalName="DEV-QUEUE-2"/>
+
+            <topic physicalName="ActiveMQ.Advisory.Connection"/>
+            <topic physicalName="ActiveMQ.Advisory.Consumer.Queue.DEV-QUEUE-1"/>
+            <topic physicalName="ActiveMQ.Advisory.Consumer.Queue.DEV-QUEUE-2"/>
         </destinations>
 
 
@@ -127,13 +108,13 @@
                 (i.e. messageTTL="-1") but create demand subscription only to the next connected
                 broker (i.e. consumerTTL="1"). See AMQ-4607.
             -->
-            <networkConnector name="network-topic" uri="dns://broker-amq-tcp-ssl:61617/?transportType=ssl" messageTTL="-1" consumerTTL="1">
+            <networkConnector name="network-topic" uri="dns://broker-amq-tcp-ssl:61617?transportType=ssl" messageTTL="-1" consumerTTL="1">
                 <dynamicallyIncludedDestinations>
                     <topic physicalName=">"/>
                 </dynamicallyIncludedDestinations>
             </networkConnector>
 
-            <networkConnector name="network-queue" uri="dns://broker-amq-tcp-ssl:61617/?transportType=ssl" messageTTL="-1" consumerTTL="1" conduitSubscriptions="false">
+            <networkConnector name="network-queue" uri="dns://broker-amq-tcp-ssl:61617?transportType=ssl" messageTTL="-1" consumerTTL="1" conduitSubscriptions="false">
                 <dynamicallyIncludedDestinations>
                     <queue physicalName=">"/>
                 </dynamicallyIncludedDestinations>
@@ -152,11 +133,27 @@
         </persistenceAdapter>
 
         <plugins>
+            <authorizationPlugin>
+                <map>
+                    <authorizationMap>
+                        <authorizationEntries>
+                            <authorizationEntry queue="DEV-QUEUE-1" read="group1" write="group1" admin="group1"/>
+                            <authorizationEntry queue="DEV-QUEUE-2" read="group2" write="group2" admin="group2"/>
+
+                            <authorizationEntry topic="ActiveMQ.Advisory.>" read="group1"/>
+                            <authorizationEntry topic="ActiveMQ.Advisory.>" read="group2"/>
+                        </authorizationEntries>
+                    </authorizationMap>
+                </map>
+            </authorizationPlugin>
+
             <bean id="jaasDualAuthenticationNetworkConnectorPlugin" class="com.garethahealy.amq6dualjaasplugin.JaasDualAuthenticationNetworkConnectorPlugin" xmlns="http://www.springframework.org/schema/beans">
-                <property name="configuration" value="activemq-props"/>
+                <property name="configuration" value="activemq-domain"/>
                 <property name="jaasCertificateConfiguration" value="activemq-cert"/>
-                <property name="jaasConfigurationAuthorizationMap" ref="authorizationMap"/>
             </bean>
+
+            <!-- NOTE: This must be last plaugin! -->
+            <bean class="com.garethahealy.amq6dualjaasplugin.NoBAuthorizationDestinationInterceptorPlugin" xmlns="http://www.springframework.org/schema/beans"/>
         </plugins>
 
         <!--

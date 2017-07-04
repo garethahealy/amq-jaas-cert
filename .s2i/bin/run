@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DUAL_JAAS_VERSION=1.2.0
+DUAL_JAAS_VERSION=1.3.0
 curl -L https://oss.sonatype.org/content/repositories/releases/com/garethahealy/amq6-dual-jaas-plugin/amq6-dual-jaas-plugin-parent/$DUAL_JAAS_VERSION/amq6-dual-jaas-plugin-parent-$DUAL_JAAS_VERSION.jar -o $AMQ_HOME/lib/amq6-dual-jaas-plugin.jar
 
 echo "Adding copy to overwrite broker.xml with predefined version"
@@ -15,7 +15,7 @@ echo "Adding test users users.properties"
 echo "echo \"user1=password\" >> $AMQ_HOME/conf/users.properties" >> $AMQ_HOME/bin/configure.sh
 echo "echo \"user2=password\" >> $AMQ_HOME/conf/users.properties" >> $AMQ_HOME/bin/configure.sh
 echo "echo \" \" >> $AMQ_HOME/conf/groups.properties" >> $AMQ_HOME/bin/configure.sh
-echo "echo \"user1=user1\" >> $AMQ_HOME/conf/groups.properties" >> $AMQ_HOME/bin/configure.sh
-echo "echo \"user2=user2\" >> $AMQ_HOME/conf/groups.properties" >> $AMQ_HOME/bin/configure.sh
+echo "echo \"group1=user1\" >> $AMQ_HOME/conf/groups.properties" >> $AMQ_HOME/bin/configure.sh
+echo "echo \"group2=user2\" >> $AMQ_HOME/conf/groups.properties" >> $AMQ_HOME/bin/configure.sh
 
 exec $AMQ_HOME/bin/launch.sh
