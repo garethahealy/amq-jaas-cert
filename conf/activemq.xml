@@ -44,6 +44,8 @@
             <topic physicalName="ActiveMQ.Advisory.Connection"/>
             <topic physicalName="ActiveMQ.Advisory.Consumer.Queue.DEV-QUEUE-1"/>
             <topic physicalName="ActiveMQ.Advisory.Consumer.Queue.DEV-QUEUE-2"/>
+            <topic physicalName="ActiveMQ.Advisory.Producer.Queue.DEV-QUEUE-1"/>
+            <topic physicalName="ActiveMQ.Advisory.Producer.Queue.DEV-QUEUE-2"/>
         </destinations>
 
 
