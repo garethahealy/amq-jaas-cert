@@ -11,7 +11,7 @@ OpenShift PoC for JBoss AMQ 6.3 using: [JaasDualAuthenticationPlugin](https://gi
 1.Create upstream templates:
 
     oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-ssl.json -n openshift
-    oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/jboss-image-streams.json -n openshift
+    oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-image-stream.json -n openshift
 
 2.Create AMQ Service Account (SA):
 
