@@ -30,7 +30,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: jboss-amq-62:1.3
+          name: jboss-amq-63:1.4
           namespace: openshift
       type: Source
     triggers:
